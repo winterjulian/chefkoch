@@ -101,8 +101,8 @@ export default {
     DateElement
   },
   props: {
-    id: { type: Number, required: false },
-    name: { type: String, required: false },
+    id: { type: Number, required: false }, // not required for template
+    name: { type: String, required: false }, // not required for template
     description: { type: String, required: false },
     date: { type: Date, required: false },
     image: { type: String, required: false },
@@ -114,25 +114,33 @@ export default {
     return {
       edit: false,
       displayDate: '',
-      tempEditData: {}
+      tempEditData: {} // empty: just containing changed properties
     }
   },
   methods: {
     switchEdit() {
+      /**
+       * Switches between edit mode and normal mode
+       */
       this.edit = !this.edit;
     },
 
     storeInput(e, target) {
+      /**
+       * Storing input until user chooses to save or abort
+       */
       this.tempEditData[target] = e.target.value;
     },
 
     saveChanges() {
-      console.log(this.date.constructor.name);
-
       this.patchData(this.tempEditData)
     },
 
     clickedTodo() {
+      /**
+       * Emits if to-do element was clicked
+       * (to set checkbox=true in mother component)
+       */
       if (!this.isDisabled) {
         this.$emit("clicked-todo");
       }
@@ -143,15 +151,13 @@ export default {
         await axios.patch(`${`http://localhost:3000/todos`}/${this.id}`, data
         ).then(response => {
           this.$emit("updated-todo", response.data);
+        }).catch(error => {
+          console.log(error);
         });
-      } catch (error) {
-        console.error(error);
+      } catch {
+        console.error('updating of todo failed');
       }
     },
-
-    testFunc(inp) {
-      console.log(inp);
-    }
   }
 }
 </script>
