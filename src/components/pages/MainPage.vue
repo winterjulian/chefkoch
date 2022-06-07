@@ -5,43 +5,46 @@
     <div class="chefkoch-holder min-width-holder-px fade-in">
       <div class="padding-20-px">
 
-
+        <!-- (1/3) title -->
         <div class="title-line-font-size padding-20-px">Übersicht</div>
 
-        <div v-if="!todos" class="display-flex centralize-flex">
-          <LoadingElement></LoadingElement>
+        <!-- (2/3) main part -->
+        <div>
+          <div v-if="!todos" class="display-flex centralize-flex">
+            <LoadingElement></LoadingElement>
+          </div>
+
+          <template v-for="(todo, index) in todos" :key="todo.id">
+            <div class="display-flex padding-top-10-px fade-in" :class="{'opacity-05': isDeleting}">
+
+              <div class="display-flex centralize-flex checkbox-container">
+                <input
+                    v-model="todo.chosen"
+                    class="check-box-size-large"
+                    type="checkbox"
+                    :id="'box' + index">
+              </div>
+              <div>
+                <TodoElement
+                    :id="todo.id"
+                    :name="todo.name"
+                    :description="todo.description"
+                    :date="todo.date"
+                    :image="todo.image"
+                    :checked="todo.checked"
+                    :isDisabled="isDeleting"
+                    :isTemplate="false"
+                    @clicked-todo="this.clickedTodo($event, index)"
+                    @updated-todo="this.updateTodo($event, index)"
+                >
+                </TodoElement>
+              </div>
+
+            </div>
+          </template>
         </div>
 
-        <template v-for="(todo, index) in todos" :key="todo.id">
-          <div class="display-flex padding-top-10-px fade-in" :class="{'opacity-05': isDeleting}">
-
-            <div class="display-flex centralize-flex checkbox-container">
-              <input
-                  v-model="todo.chosen"
-                  class="check-box-size-large"
-                  type="checkbox"
-                  :id="'box' + index">
-            </div>
-            <div>
-              <TodoElement
-                  :id="todo.id"
-                  :name="todo.name"
-                  :description="todo.description"
-                  :date="todo.date"
-                  :image="todo.image"
-                  :checked="todo.checked"
-                  :isDisabled="isDeleting"
-                  @clicked-todo="this.clickedTodo($event, index)"
-                  @updated-todo="this.updateTodo($event, index)"
-              >
-              </TodoElement>
-            </div>
-
-          </div>
-        </template>
-
-
-
+        <!-- (3/3) button part -->
         <div v-if="!isDeleting" class="display-flex">
 
           <div class="checkbox-container"></div>
@@ -54,7 +57,7 @@
                   :first-button-text="'Erledigt'"
                   :second-button-text="'Löschen'"
                   :is-disabled="isDeleting"
-                  @first-button-clicked="consoleLog('first')"
+                  @first-button-clicked="setTodosAsChecked()"
                   @second-button-clicked="deleteAllChosenTodos()"
               >
               </ButtonGroupElement>
@@ -87,7 +90,6 @@ export default {
     TodoElement,
     ButtonGroupElement
   },
-
   data() {
     return {
       todos: null,
@@ -101,13 +103,8 @@ export default {
 
   methods: {
 
-    resetData() {
-      this.todos = null;
-    },
-
     loadData() {
       fetch("http://localhost:3000/todos").then(response => {
-        console.log('response', response)
         return response.json();
       }).then(data => {
         data.forEach(todo => {
@@ -118,11 +115,10 @@ export default {
       })
     },
 
-    navigateToAddPage() {
-      window.location.hash = '/add';
-    },
-
     convertDate(todo) {
+      /**
+       * Converts string from json into valid date object
+       */
       try {
         todo.date = new Date(todo.date);
       } catch {
@@ -131,10 +127,17 @@ export default {
     },
 
     addChosen(todo) {
+      /**
+       * Adds the chosen property to to-do object
+       */
       todo['chosen'] = false;
     },
 
     updateTodo(todo, index) {
+      /**
+       * Updating to-do after child comp has received positive feedback
+       * Date is string, convert to valid date object
+       */
       this.convertDate(todo);
       this.todos[index] = todo;
     },
@@ -143,19 +146,43 @@ export default {
       this.todos[index].chosen=!this.todos[index].chosen;
     },
 
-    consoleLog(inp) {
-      console.log(inp);
+    setTodosAsChecked() {
+      /**
+       * Collects all chosen todos and prepares them for marked as checked
+       */
+      let updateChainTodos = [];
+      this.todos.forEach(todo => {
+        if (todo.chosen) { updateChainTodos.push(todo) }
+      })
+
+      this.updateCascade(updateChainTodos, 0)
+    },
+
+    async updateCascade(todos, index) {
+      if (index < todos.length) {
+        axios.patch(`${`http://localhost:3000/todos`}/${todos[index].id}`,
+            { checked: true }
+        ).then(response => {
+          todos[index].checked = response.data.checked;
+        }).catch(error => { console.log(error) }
+        ).finally(() => {
+          this.updateCascade(todos, index+1)
+        })
+      } else {
+        // this.resetData();
+        // this.loadData();
+      }
     },
 
     deleteAllChosenTodos() {
+      /**
+       * Collects all chosen todos and prepares them for deletion
+       */
       this.isDeleting = true;
-      let compareValue = 0;
       let deleteChainTodos = [];
-      // let deleteChainResponses = [];
 
       this.todos.forEach(todo => {
         if (todo.chosen) {
-          compareValue = compareValue + 1
           deleteChainTodos.push(todo);
         }
       })
@@ -166,14 +193,19 @@ export default {
     async deleteCascade(todos, index) {
       if (index < todos.length) {
         axios.delete(`${`http://localhost:3000/todos`}/${todos[index].id}`
+        ).catch(error => { console.log(error) }
         ).finally(() => {
           this.deleteCascade(todos, index+1)
         })
       } else {
         this.isDeleting = false;
-        this.resetData();
+        // this.resetData();
         this.loadData();
       }
+    },
+
+    navigateToAddPage() {
+      window.location.hash = '/add';
     }
   }
 

@@ -20,6 +20,10 @@ export default {
   },
   methods: {
     createDisplayDate(date) {
+      /**
+       * Take parts of date via date object functions
+       * No string splicing
+       */
       let day = date.getDate();
       let month = date.getMonth();
       const year = date.getFullYear();

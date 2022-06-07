@@ -17,7 +17,6 @@ export default {
   components: {
     MainPage
   },
-
   data() {
     return {
       currentPath: window.location.hash
@@ -26,8 +25,6 @@ export default {
 
   mounted() {
     window.addEventListener('hashchange', () => {
-      console.log('CHANGE');
-      console.log(window.location.hash)
       this.currentPath = window.location.hash
     })
   },

@@ -148,6 +148,11 @@
     border: 2px solid #6e84e7;
 }
 
+.todo-checked-background {
+    background-color: green;
+    opacity: 0.5;
+}
+
 .opacity-05 {
     opacity: 0.5;
 }
@@ -168,6 +173,10 @@
     font-size: 18px;
 }
 
+.font-size-50-px {
+    font-size: 50px;
+}
+
 .font-weight-bold {
     font-weight: bold;
 }
@@ -182,7 +191,6 @@
 
 .todo-image-no-image {
     background-color: lightgrey;
-    font-size: 50px;
     color: white;
 }
 

@@ -4,17 +4,17 @@
     <div class="chefkoch-holder min-width-holder-px fade-in">
       <div class="padding-20-px">
 
+
+
+        <!-- (1/4) title row  -->
         <div class="title-line-font-size padding-20-px">
-
-
           Aufgabe hinzufügen (Vorschau)
-
-
         </div>
+
+
+
+        <!-- (2/4) img preview  -->
         <div class="display-flex">
-
-
-          <!--- Vorschau --->
           <div class="checkbox-container"></div>
           <TodoElement
               :name="newTodo.name"
@@ -23,12 +23,12 @@
               :image="newTodo.image"
               :isTemplate="true"
           ></TodoElement>
-
-
         </div>
+
+
+
+        <!-- (3/4) input  -->
         <div>
-
-
           <div class="display-flex padding-top-10-px">
             <div class="checkbox-container"></div>
             <div class="width-100-percent">
@@ -51,19 +51,20 @@
               </div>
             </div>
           </div>
-
-
         </div>
+
+
+
+        <!-- (4/4) buttons  -->
         <div class="display-flex justify-content-flex-end">
-
-
-          <!--- Buttons --->
           <div class="checkbox-container"></div>
           <div class="display-flex flex-1 button-group-padding">
+            <!-- upload button customisation  -->
             <input type="file" id="upload" @change="uploadImage($event)" hidden/>
             <label class="basic-label basic-button-border-radius basic-border-none font-color-white background-color-raspberry" for="upload">
               Bild hochladen
             </label>
+
           </div>
           <div class="button-group-padding">
             <ButtonGroupElement
@@ -74,9 +75,9 @@
             >
             </ButtonGroupElement>
           </div>
-
-
         </div>
+
+
 
       </div>
     </div>
@@ -106,11 +107,11 @@ export default {
     }
   },
   methods: {
-    navigateToMainPage() {
-      window.location.hash = '/';
-    },
 
     uploadImage(e) {
+      /**
+       * Uploads the image in the previewer
+       */
       const image = e.target.files[0];
       const reader = new FileReader();
       reader.readAsDataURL(image);
@@ -126,11 +127,17 @@ export default {
           {
             this.navigateToMainPage();
           }
-        );
-      } catch (error) {
-        console.log(error)
+        ).catch(error => { console.log(error) });
+      } catch {
+        console.log('Saving of a new todo failed')
       }
+    },
+
+    navigateToMainPage() {
+      window.location.hash = '/';
     }
+
+
   }
 }
 </script>

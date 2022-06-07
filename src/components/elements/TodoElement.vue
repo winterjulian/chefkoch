@@ -1,26 +1,53 @@
 <template>
   <div>
+
     <div v-on:click="clickedTodo()" :class="{ 'todo-frame-hover': !isTemplate }" class="todo-frame">
 
+
+
+      <!-- (1/2) image holder -->
       <div class="todo-image-holder">
 
+        <!-- if image exists -->
         <template v-if="image">
-          <img v-if="image" class="todo-image todo-image-holder" :src="image">
+          <div>
+            <!-- if to do checked: extra layer above image (z-index) -->
+            <div v-if="checked" style="position: absolute; z-index: 100;"
+                 class="todo-checked-background font-size-50-px display-flex centralize-flex todo-image-holder font-color-white">
+              <i class="fa fa-check"></i>
+            </div>
+            <img v-if="image" class="todo-image todo-image-holder" :src="image">
+          </div>
         </template>
+
+        <!-- if no image exists -->
         <template v-if="!image">
-          <div class="todo-image todo-image-holder todo-image-no-image display-flex centralize-flex"><i class="fa fa-question-circle"></i></div>
+          <!-- if to do checked (without pic): alternative element -->
+          <div v-if="checked" class="todo-checked-background todo-image todo-image-holder font-size-50-px display-flex centralize-flex font-color-white">
+            <i class="fa fa-check"></i>
+          </div>
+          <div v-if="!checked" class="todo-image todo-image-holder todo-image-no-image font-size-50-px display-flex centralize-flex">
+            <i class="fa fa-question-circle"></i>
+          </div>
         </template>
 
       </div>
 
-      <div class="todo-meta-holder display-flex">
-        <div class="todo-meta-wrapper display-flex width-100-percent">
 
+
+      <!-- (2/2) meta data holder -->
+      <div class="todo-meta-holder display-flex">
+        <!-- meta data wrapper -->
+        <div class="todo-meta-wrapper display-flex width-100-percent">
           <div class="display-flex flex-direction-col height-100-percent width-100-percent">
 
+            <!-- date row -->
             <div class="display-flex justify-content-flex-end font-size-14-px"><DateElement :date="date"></DateElement></div>
 
+            <!-- title & description row -->
             <div class="display-flex height-100-percent">
+
+              <!-- standard display -->
               <template v-if="!edit">
                 <div class="flex-4 display-flex flex-direction-col font-size-18-px">
                   <div class="font-weight-bold">{{ name }}</div>
@@ -30,6 +57,8 @@
                   <button v-if="!isTemplate" v-on:click="switchEdit()" :disabled="isDisabled" class="basic-round-button basic-round-button-size-small"><i class="fa fa-pencil"></i></button>
                 </div>
               </template>
+
+              <!-- edit display -->
               <template v-if="edit">
                 <div class="flex-4 display-flex flex-direction-col">
                   <div>
@@ -48,14 +77,17 @@
                   </button>
                 </div>
               </template>
+
             </div>
 
           </div>
-
         </div>
       </div>
 
+
+
     </div>
+
   </div>
 </template>
 

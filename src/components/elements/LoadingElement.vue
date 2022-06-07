@@ -1,4 +1,5 @@
 <template>
+  <!-- loader, from https://loading.io/css/ -->
   <div>
     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
   </div>
@@ -8,11 +9,12 @@
 export default {
   name: "LoadingElement",
   props: {
-    size: { type: String, required: false }
+    size: { type: String, required: false },
   },
 
   data() {
     return {
+      source: 'https://loading.io/css/',
       elementFrame: '80px',
       elementSize: '64px',
       elementThickness: '8px'
@@ -20,6 +22,7 @@ export default {
   },
 
   created() {
+    console.log('loader source: https://loading.io/css/');
     if (this.size === 'small') {
       this.elementFrame = '50px';
       this.elementSize = '32px';
