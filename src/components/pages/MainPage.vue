@@ -1,0 +1,186 @@
+<template>
+  <div class="display-flex centralize-flex font-type padding-top-30-px">
+
+
+    <div class="chefkoch-holder min-width-holder-px fade-in">
+      <div class="padding-20-px">
+
+
+        <div class="title-line-font-size padding-20-px">Übersicht</div>
+
+        <div v-if="!todos" class="display-flex centralize-flex">
+          <LoadingElement></LoadingElement>
+        </div>
+
+        <template v-for="(todo, index) in todos" :key="todo.id">
+          <div class="display-flex padding-top-10-px fade-in" :class="{'opacity-05': isDeleting}">
+
+            <div class="display-flex centralize-flex checkbox-container">
+              <input
+                  v-model="todo.chosen"
+                  class="check-box-size-large"
+                  type="checkbox"
+                  :id="'box' + index">
+            </div>
+            <div>
+              <TodoElement
+                  :id="todo.id"
+                  :name="todo.name"
+                  :description="todo.description"
+                  :date="todo.date"
+                  :image="todo.image"
+                  :checked="todo.checked"
+                  :isDisabled="isDeleting"
+                  @clicked-todo="this.clickedTodo($event, index)"
+                  @updated-todo="this.updateTodo($event, index)"
+              >
+              </TodoElement>
+            </div>
+
+          </div>
+        </template>
+
+
+
+        <div v-if="!isDeleting" class="display-flex">
+
+          <div class="checkbox-container"></div>
+          <div class="button-group-padding display-flex justify-content-space-between width-100-percent">
+            <div>
+              <button v-on:click="navigateToAddPage()" :disabled='isDeleting' class="basic-round-button basic-round-button-size-medium background-color-blue"><i style="font-size: 25px; color: white;" class="fa fa-plus"></i></button>
+            </div>
+            <div>
+              <ButtonGroupElement
+                  :first-button-text="'Erledigt'"
+                  :second-button-text="'Löschen'"
+                  :is-disabled="isDeleting"
+                  @first-button-clicked="consoleLog('first')"
+                  @second-button-clicked="deleteAllChosenTodos()"
+              >
+              </ButtonGroupElement>
+            </div>
+          </div>
+
+        </div>
+        <div v-if="isDeleting" class="display-flex centralize-flex width-100-percent">
+          <LoadingElement :size="'small'"></LoadingElement>
+        </div>
+
+
+
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import TodoElement from '../elements/TodoElement'
+import ButtonGroupElement from '../elements/ButtonGroupElement'
+import LoadingElement from "@/components/elements/LoadingElement";
+import axios from "axios";
+
+export default {
+  name: "MainPage",
+  components: {
+    LoadingElement,
+    TodoElement,
+    ButtonGroupElement
+  },
+
+  data() {
+    return {
+      todos: null,
+      isDeleting: false
+    }
+  },
+
+  created() {
+    this.loadData();
+  },
+
+  methods: {
+
+    resetData() {
+      this.todos = null;
+    },
+
+    loadData() {
+      fetch("http://localhost:3000/todos").then(response => {
+        console.log('response', response)
+        return response.json();
+      }).then(data => {
+        data.forEach(todo => {
+          this.convertDate(todo)
+          this.addChosen(todo)
+        })
+        this.todos = data;
+      })
+    },
+
+    navigateToAddPage() {
+      window.location.hash = '/add';
+    },
+
+    convertDate(todo) {
+      try {
+        todo.date = new Date(todo.date);
+      } catch {
+        console.log('Failed to create date out of ' + todo.date);
+      }
+    },
+
+    addChosen(todo) {
+      todo['chosen'] = false;
+    },
+
+    updateTodo(todo, index) {
+      this.convertDate(todo);
+      this.todos[index] = todo;
+    },
+
+    clickedTodo(todo, index) {
+      this.todos[index].chosen=!this.todos[index].chosen;
+    },
+
+    consoleLog(inp) {
+      console.log(inp);
+    },
+
+    deleteAllChosenTodos() {
+      this.isDeleting = true;
+      let compareValue = 0;
+      let deleteChainTodos = [];
+      // let deleteChainResponses = [];
+
+      this.todos.forEach(todo => {
+        if (todo.chosen) {
+          compareValue = compareValue + 1
+          deleteChainTodos.push(todo);
+        }
+      })
+
+      this.deleteCascade(deleteChainTodos, 0)
+    },
+
+    async deleteCascade(todos, index) {
+      if (index < todos.length) {
+        axios.delete(`${`http://localhost:3000/todos`}/${todos[index].id}`
+        ).finally(() => {
+          this.deleteCascade(todos, index+1)
+        })
+      } else {
+        this.isDeleting = false;
+        this.resetData();
+        this.loadData();
+      }
+    }
+  }
+
+
+}
+</script>
+
+<style scoped>
+@import '../../global.css';
+</style>

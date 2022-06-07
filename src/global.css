@@ -1,0 +1,258 @@
+.chefkoch-holder {
+    background-color: #eceffd;
+    border-radius: 24px
+}
+
+.font-type {
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+.display-flex {
+    display: flex;
+}
+
+.centralize-flex {
+    align-items: center;
+    justify-content: center;
+}
+
+.min-width-holder-px {
+    min-width: 610px;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-4 {
+    flex: 4;
+}
+
+.flex-direction-col {
+    flex-direction: column;
+}
+
+.flex-direction-row {
+    flex-direction: row;
+}
+
+.justify-content-flex-end {
+    justify-content: flex-end;
+}
+
+.justify-content-space-between {
+    justify-content: space-between;
+}
+
+.height-100-percent {
+    height: 100%;
+}
+
+.width-100-percent {
+    width: 100%;
+}
+
+.basic-input-field {
+    background: #FFFFFF;
+    border-radius: 8px;
+    height: 30px;
+    font-size: 18px;
+    padding: 15px;
+    border: 2px solid transparent;
+}
+
+.basic-input-field-small {
+    background: lightgrey;
+    border-radius: 10px;
+    border: 0;
+    height: 15px;
+    font-size: 16px;
+    padding: 5px;
+}
+
+.basic-round-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0 transparent;
+    border-radius: 50%;
+}
+
+.checkbox-container {
+    width: 40px;
+}
+
+.check-box-size-large {
+    height: 20px;
+    width: 20px;
+}
+
+.basic-round-button-size-small {
+    height: 25px;
+    width: 25px;
+}
+
+.basic-round-button-size-medium {
+    height: 40px;
+    width: 40px;
+}
+
+.basic-button {
+    height: 40px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.basic-button-border-radius {
+    border-radius: 20px;
+}
+
+.basic-border-none {
+    border: 0;
+}
+
+.button-color-green {
+    background-color: #b2d073;
+}
+
+.button-color-red {
+    background-color: #ef7c7c;
+}
+
+.background-color-white {
+    background-color: white;
+}
+.background-color-white:hover {
+    background-color: whitesmoke;
+}
+
+.background-color-blue {
+    background-color: #3D5DE8;
+}
+.background-color-blue:hover {
+    background-color: #6e84e7;
+}
+
+
+.background-color-raspberry {
+    background-color: #FF0054;
+}
+.background-color-raspberry:hover {
+    background-color: #ff598f;
+}
+
+.button-border-color-blue, .basic-input-field:hover {
+    border: 2px solid #3D5DE8;
+}
+.button-border-color-blue:hover {
+    border: 2px solid #6e84e7;
+}
+
+.opacity-05 {
+    opacity: 0.5;
+}
+
+.title-line-font-size {
+    font-size: 32px;
+}
+
+.font-size-14-px {
+    font-size: 14px;
+}
+
+.font-size-16-px {
+    font-size: 16px;
+}
+
+.font-size-18-px {
+    font-size: 18px;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}
+
+.font-color-white {
+    color:white;
+}
+
+.font-color-blue {
+    color: #3D5DE8
+}
+
+.todo-image-no-image {
+    background-color: lightgrey;
+    font-size: 50px;
+    color: white;
+}
+
+.fade-in {
+    animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+
+
+/*MARGINS & PADDINGS*/
+
+
+
+.padding-5-px {
+    padding: 5px;
+}
+
+.padding-10-px {
+    padding: 10px;
+}
+
+.padding-20-px {
+    padding: 20px;
+}
+
+.padding-top-5-px {
+    padding-top: 5px;
+}
+
+.padding-top-10-px {
+    padding-top: 10px;
+}
+
+.padding-top-30-px {
+    padding-top: 30px;
+}
+
+.padding-right-10-px {
+    padding-right: 10px;
+}
+
+.padding-left-10-px {
+    padding-left: 10px;
+}
+
+.padding-left-20-px {
+    padding-left: 20px;
+}
+
+.padding-bottom-5-px {
+    padding-bottom: 5px;
+}
+
+.margin-5-px {
+    margin: 5px;
+}
+
+.margin-10-px {
+    margin: 10px;
+}
+
+.margin-left-10-px {
+    margin-left: 10px;
+}
+
+.button-group-padding {
+    padding: 20px 0px;
+}
