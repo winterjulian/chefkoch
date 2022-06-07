@@ -69,8 +69,6 @@
           <LoadingElement :size="'small'"></LoadingElement>
         </div>
 
-
-
       </div>
     </div>
 
@@ -104,15 +102,14 @@ export default {
   methods: {
 
     loadData() {
-      fetch("http://localhost:3000/todos").then(response => {
-        return response.json();
-      }).then(data => {
-        data.forEach(todo => {
-          this.convertDate(todo)
-          this.addChosen(todo)
+      axios.get("http://localhost:3000/todos"
+      ).then(response => {
+        response.data.forEach(todo => {
+          this.convertDate(todo);
+          this.addChosen(todo);
         })
-        this.todos = data;
-      })
+        this.todos = response.data;
+      }).catch(error => { console.log(error) })
     },
 
     convertDate(todo) {
@@ -160,7 +157,7 @@ export default {
 
     async updateCascade(todos, index) {
       if (index < todos.length) {
-        axios.patch(`${`http://localhost:3000/todos`}/${todos[index].id}`,
+        axios.patch(`${`http://localhost:3000/todos/check`}/${todos[index].id}`, // changed to /todos/check/:id following instructions
             { checked: true }
         ).then(response => {
           todos[index].checked = response.data.checked;
@@ -168,9 +165,6 @@ export default {
         ).finally(() => {
           this.updateCascade(todos, index+1)
         })
-      } else {
-        // this.resetData();
-        // this.loadData();
       }
     },
 
@@ -199,7 +193,6 @@ export default {
         })
       } else {
         this.isDeleting = false;
-        // this.resetData();
         this.loadData();
       }
     },

@@ -21,21 +21,10 @@ export default {
   methods: {
     createDisplayDate(date) {
       /**
-       * Take parts of date via date object functions
-       * No string splicing
+       * Converts date into display format
        */
-      let day = date.getDate();
-      let month = date.getMonth();
-      const year = date.getFullYear();
-
-      if (day.length === 1) {
-        day = '0' + day;
-      }
-      if (month.length === 1) {
-        month = '0' + month;
-      }
-
-      this.displayDate = day + '.' + month + '.' + year;
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      this.displayDate = date.toLocaleDateString('de-DE', options);
     }
   }
 }

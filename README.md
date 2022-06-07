@@ -1,24 +1,16 @@
-# chefkoch
+# chefkoch Todo-App
 
 ## Project setup
-```
-npm install
-```
+Clone repository and run `npm install`.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+This project uses [json-server](https://www.npmjs.com/package/json-server) and [axios](https://github.com/axios/axios).
+To mock an api and access REST requests.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Start the json-server with `json-server --watch db.json --routes routes.json`.
 
-### Lints and fixes files
-```
-npm run lint
-```
+Compiles and hot-reloads for development `npm run serve`.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Build for production with `npm run build`.
+
+Start tests with `cypress open`.
+
