@@ -1,23 +1,23 @@
 const checkInput = 'Katzenfutter'
 
 describe('MainPage', () => {
-  beforeEach(() => {
-    cy.visit('http://localhost:8080/')
-  })
-
   it('waits until built', () => {
+
+    cy.intercept('http://localhost:8080/').as('mainPage');
+    cy.visit('http://localhost:8080/');
+    cy.wait('@mainPage')
 
     cy.wait(2000);
 
   })
 
   it('clicks on the button', () => {
-    cy.get('.basic-round-button').click();
-    cy.get('.basic-input-field').first().type(` für Chefkoch`);
-    cy.get('.basic-input-field').last().type(`Eine zauberhafte Beschreibung`);
+    cy.get('.basic-round-button').last().click()
 
-    cy.wait(1000);
+    cy.url().should('contain', '/add'); // waits until url is present
 
+    cy.get('.basic-input-field').first().type(" für Chefkoch");
+    cy.get('.basic-input-field').last().type("Eine zauberhafte Beschreibung");
     cy.contains('Speichern').click();
   })
 
@@ -35,8 +35,7 @@ describe('MainPage', () => {
     cy.contains('Löschen').click();
     cy.contains(checkInput).should('not.exist');
 
-    cy.wait(2000);
+    cy.wait(1000);
   })
-
 
 })
