@@ -4,7 +4,7 @@
 }
 
 .font-type {
-    font-family: "Source Sans Pro", sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .display-flex {
@@ -159,6 +159,7 @@
 
 .title-line-font-size {
     font-size: 32px;
+    font-weight: 600;
 }
 
 .font-size-14-px {
